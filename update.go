@@ -6,13 +6,20 @@ import (
 )
 
 // Update updates ManifestWork
-func Update(work workapiv1.ManifestWork, resource Resource, obj runtime.Object) (workapiv1.ManifestWork, error) {
-	err := validate(resource)
+func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error) {
+	manifests := work.Spec.Workload.Manifests
+	group, version, kind, err := getGVKFromObject(obj)
 	if err != nil {
 		return work, err
 	}
-
-	manifests := work.Spec.Workload.Manifests
+	objName, err := getNameFromObject(obj)
+	if err != nil {
+		return work, err
+	}
+	objNamespace, err := getNamespaceFromObject(obj)
+	if err != nil {
+		return work, err
+	}
 
 	for i, manifest := range manifests {
 		o, gvk, err := decode(manifest.Raw)
@@ -20,15 +27,15 @@ func Update(work workapiv1.ManifestWork, resource Resource, obj runtime.Object) 
 			return work, err
 		}
 		if gvk.Group != "" {
-			if gvk.Group != resource.Group {
+			if gvk.Group != group {
 				continue
 			}
 		} else {
-			if gvk.Version != resource.Version {
+			if gvk.Version != version {
 				continue
 			}
 		}
-		if gvk.Kind != resource.Kind {
+		if gvk.Kind != kind {
 			continue
 		}
 
@@ -37,8 +44,8 @@ func Update(work workapiv1.ManifestWork, resource Resource, obj runtime.Object) 
 			return work, err
 		}
 
-		if name == resource.Name {
-			if resource.Namespace == "" {
+		if name == objName {
+			if objNamespace == "" {
 				manifests[i] = workapiv1.Manifest{
 					RawExtension: runtime.RawExtension{
 						Raw:    manifest.Raw,
@@ -52,7 +59,7 @@ func Update(work workapiv1.ManifestWork, resource Resource, obj runtime.Object) 
 			if err != nil {
 				return work, nil
 			}
-			if namespace == resource.Namespace {
+			if namespace == objNamespace {
 				manifests[i] = workapiv1.Manifest{
 					RawExtension: runtime.RawExtension{
 						Raw:    manifest.Raw,

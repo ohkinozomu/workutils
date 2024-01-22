@@ -23,6 +23,11 @@ func decode(data []byte) (runtime.Object, *schema.GroupVersionKind, error) {
 	return obj, gvk, nil
 }
 
+func getGVKFromObject(obj runtime.Object) (string, string, string, error) {
+	gvk := obj.GetObjectKind().GroupVersionKind()
+	return gvk.Group, gvk.Version, gvk.Kind, nil
+}
+
 func getNameFromObject(obj runtime.Object) (string, error) {
 	accessor, err := meta.Accessor(obj)
 	if err != nil {

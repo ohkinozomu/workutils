@@ -3,8 +3,7 @@ package workutils
 import (
 	"testing"
 
-	"github.com/go-playground/assert/v2"
-	testify "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
@@ -42,9 +41,9 @@ spec:
 `
 
 	namespace, err := stringToRawExtension(nsStr)
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	deployment, err := stringToRawExtension(deploymentStr)
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	work := workapiv1.ManifestWork{
 		Spec: workapiv1.ManifestWorkSpec{
 			Workload: workapiv1.ManifestsTemplate{
@@ -57,7 +56,7 @@ spec:
 		},
 	}
 	updatedWork, err := Add(work, deployment.Object)
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, len(updatedWork.Spec.Workload.Manifests), 2)
 	obj, err := Get(updatedWork, Resource{
 		Group:   "apps",
@@ -65,8 +64,8 @@ spec:
 		Kind:    "Deployment",
 		Name:    "nginx-deployment",
 	})
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	d, ok := obj.(*appsv1.Deployment)
-	testify.Equal(t, true, ok)
-	testify.Equal(t, "nginx-deployment", d.Name)
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "nginx-deployment", d.Name)
 }

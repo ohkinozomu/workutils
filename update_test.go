@@ -29,12 +29,7 @@ metadata:
 			},
 		},
 	}
-	updatedWork, err := Update(work, Resource{
-		Group:   "",
-		Version: "v1",
-		Kind:    "Namespace",
-		Name:    "test-namespace",
-	}, &corev1.Namespace{
+	updatedWork, err := Update(work, &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "updated",
 		},

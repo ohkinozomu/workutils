@@ -3,8 +3,7 @@ package workutils
 import (
 	"testing"
 
-	"github.com/go-playground/assert/v2"
-	testify "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
@@ -41,9 +40,9 @@ spec:
 `
 
 	namespace, err := stringToRawExtension(nsStr)
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	deployment, err := stringToRawExtension(deploymentStr)
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 	work := workapiv1.ManifestWork{
 		Spec: workapiv1.ManifestWorkSpec{
 			Workload: workapiv1.ManifestsTemplate{
@@ -64,7 +63,7 @@ spec:
 		Kind:    "Namespace",
 		Name:    "test-namespace",
 	})
-	testify.Nil(t, err)
+	assert.Nil(t, err)
 
 	assert.Equal(t, 1, len(updatedWork.Spec.Workload.Manifests))
 }
