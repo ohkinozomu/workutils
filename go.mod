@@ -1,14 +1,14 @@
 module github.com/ohkinozomu/workutils
 
-go 1.21.6
+go 1.19
 
 require (
 	github.com/go-playground/validator/v10 v10.17.0
 	github.com/stretchr/testify v1.8.4
-	k8s.io/api v0.26.1
-	k8s.io/apimachinery v0.26.1
-	k8s.io/client-go v0.26.1
-	open-cluster-management.io/api v0.12.0
+	k8s.io/api v0.25.5
+	k8s.io/apimachinery v0.25.5
+	k8s.io/client-go v0.25.5
+	open-cluster-management.io/api v0.10.1
 )
 
 require (
