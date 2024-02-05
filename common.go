@@ -12,7 +12,7 @@ import (
 )
 
 func decode(data []byte) (runtime.Object, *schema.GroupVersionKind, error) {
-	scheme := scheme.Scheme
+	scheme := wellknownScheme
 	// https://github.com/kubernetes/apimachinery/issues/102#issue-713181306
 	codecs := serializer.NewCodecFactory(scheme)
 	deserializer := codecs.UniversalDeserializer()
