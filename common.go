@@ -8,7 +8,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apimachinery/pkg/runtime/serializer/json"
-	"k8s.io/client-go/kubernetes/scheme"
 )
 
 func decode(data []byte) (runtime.Object, *schema.GroupVersionKind, error) {
@@ -59,7 +58,9 @@ func stringToRawExtension(manifest string) (runtime.RawExtension, error) {
 }
 
 func objToRawExtension(obj runtime.Object) (runtime.RawExtension, error) {
-	serializer := json.NewYAMLSerializer(json.DefaultMetaFactory, scheme.Scheme, scheme.Scheme)
+	// Probably RawExtension.Raw should be JSON.
+	// https://github.com/kubernetes/apimachinery/issues/102#issuecomment-707187760
+	serializer := json.NewSerializer(json.DefaultMetaFactory, wellknownScheme, wellknownScheme, false)
 	var buffer bytes.Buffer
 
 	err := serializer.Encode(obj, &buffer)
