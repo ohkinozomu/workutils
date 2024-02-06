@@ -6,7 +6,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	v1 "k8s.io/api/core/v1"
 )
 
 func TestStringToRawExtension(t *testing.T) {
@@ -33,11 +32,11 @@ metadata:
 	obj, _, err := decode([]byte(nsStr))
 	require.Nil(t, err)
 
-	_, err = objToRawExtension(obj)
+	rawExtension, err := objToRawExtension(obj)
 	require.Nil(t, err)
 
-	ns, ok := obj.(*v1.Namespace)
-	require.True(t, ok)
+	decoded, _, err := decode(rawExtension.Raw)
+	require.Nil(t, err)
 
-	assert.Equal(t, "test-namespace", ns.Name)
+	assert.Equal(t, obj, decoded)
 }

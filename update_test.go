@@ -3,7 +3,7 @@ package workutils
 import (
 	"testing"
 
-	testify "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -40,7 +40,7 @@ spec:
         - containerPort: 80
 `
 	raw, err := stringToRawExtension(deploymentStr)
-	testify.Nil(t, err)
+	require.Nil(t, err)
 	work := workapiv1.ManifestWork{
 		Spec: workapiv1.ManifestWorkSpec{
 			Workload: workapiv1.ManifestsTemplate{
@@ -102,7 +102,8 @@ spec:
 	}
 
 	updatedWork, err := Update(work, deployment)
-	testify.Nil(t, err)
+	require.Nil(t, err)
+	require.Equal(t, len(updatedWork.Spec.Workload.Manifests), 1)
 
 	obj, err := Get(updatedWork, Resource{
 		Group:     "apps",
@@ -111,7 +112,7 @@ spec:
 		Name:      "nginx-deployment",
 		Namespace: "nginx",
 	})
-	testify.Nil(t, err)
+	require.Nil(t, err)
 	updatedDeployment := obj.(*appsv1.Deployment)
-	testify.Equal(t, "UPDATED", updatedDeployment.Spec.Template.Spec.Containers[0].Env[0].Value)
+	require.Equal(t, "UPDATED", updatedDeployment.Spec.Template.Spec.Containers[0].Env[0].Value)
 }
