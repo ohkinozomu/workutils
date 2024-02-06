@@ -44,13 +44,15 @@ func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.Manifest
 			return work, err
 		}
 
+		rawExtension, err := objToRawExtension(obj)
+		if err != nil {
+			return work, err
+		}
+
 		if name == objName {
 			if objNamespace == "" {
 				manifests[i] = workapiv1.Manifest{
-					RawExtension: runtime.RawExtension{
-						Raw:    manifest.Raw,
-						Object: o,
-					},
+					RawExtension: rawExtension,
 				}
 				work.Spec.Workload.Manifests = manifests
 				return work, nil
@@ -61,10 +63,7 @@ func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.Manifest
 			}
 			if namespace == objNamespace {
 				manifests[i] = workapiv1.Manifest{
-					RawExtension: runtime.RawExtension{
-						Raw:    manifest.Raw,
-						Object: o,
-					},
+					RawExtension: rawExtension,
 				}
 				work.Spec.Workload.Manifests = manifests
 				return work, nil
