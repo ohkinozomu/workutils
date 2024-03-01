@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/go-playground/validator/v10 v10.17.0
 	github.com/ohkinozomu/go-sh v0.0.1
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	k8s.io/api v0.25.5
 	k8s.io/apiextensions-apiserver v0.23.0
 	k8s.io/apimachinery v0.25.5
