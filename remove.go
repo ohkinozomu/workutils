@@ -3,11 +3,12 @@ package workutils
 import (
 	"slices"
 
+	"k8s.io/client-go/kubernetes/scheme"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
 // Remove removes the resource with the given APIVersion, Kind, Name, and Namespace
-func Remove(work workapiv1.ManifestWork, resource Resource) (workapiv1.ManifestWork, error) {
+func (client *WorkUtilsClient) Remove(work workapiv1.ManifestWork, resource Resource) (workapiv1.ManifestWork, error) {
 	err := validate(resource)
 	if err != nil {
 		return work, err
@@ -16,7 +17,7 @@ func Remove(work workapiv1.ManifestWork, resource Resource) (workapiv1.ManifestW
 	manifests := work.Spec.Workload.Manifests
 
 	for i, manifest := range manifests {
-		o, gvk, err := decode(manifest.Raw)
+		o, gvk, err := decode(manifest.Raw, scheme.Scheme)
 		if err != nil {
 			return work, err
 		}

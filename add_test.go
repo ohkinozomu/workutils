@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
+	"k8s.io/client-go/kubernetes/scheme"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
@@ -55,10 +56,11 @@ spec:
 			},
 		},
 	}
-	updatedWork, err := Add(work, deployment.Object)
+	client := NewWorkUtilsClient(scheme.Scheme)
+	updatedWork, err := client.Add(work, deployment.Object)
 	assert.Nil(t, err)
 	assert.Equal(t, len(updatedWork.Spec.Workload.Manifests), 2)
-	obj, err := Get(updatedWork, Resource{
+	obj, err := client.Get(updatedWork, Resource{
 		Group:   "apps",
 		Version: "v1",
 		Kind:    "Deployment",

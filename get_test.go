@@ -5,6 +5,7 @@ import (
 
 	testify "github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/client-go/kubernetes/scheme"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
@@ -28,7 +29,8 @@ metadata:
 			},
 		},
 	}
-	obj, err := Get(work, Resource{
+	client := NewWorkUtilsClient(scheme.Scheme)
+	obj, err := client.Get(work, Resource{
 		Group:   "",
 		Version: "v1",
 		Kind:    "Namespace",

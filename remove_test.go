@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"k8s.io/client-go/kubernetes/scheme"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
@@ -57,7 +58,8 @@ spec:
 			},
 		},
 	}
-	updatedWork, err := Remove(work, Resource{
+	client := NewWorkUtilsClient(scheme.Scheme)
+	updatedWork, err := client.Remove(work, Resource{
 		Group:   "",
 		Version: "v1",
 		Kind:    "Namespace",

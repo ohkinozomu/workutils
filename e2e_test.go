@@ -10,6 +10,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/utils/pointer"
 	workclient "open-cluster-management.io/api/client/work/clientset/versioned"
@@ -92,7 +93,7 @@ func TestE2E(t *testing.T) {
 		},
 	}
 
-	rawExtension, err := objToRawExtension(deployment)
+	rawExtension, err := objToRawExtension(deployment, scheme.Scheme)
 	require.Nil(t, err)
 	manifestWork := &workapiv1.ManifestWork{
 		ObjectMeta: metav1.ObjectMeta{
