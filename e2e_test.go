@@ -36,7 +36,7 @@ func TestE2E(t *testing.T) {
 	require.Nil(t, err)
 
 	// hack
-	time.Sleep(20 * time.Second)
+	time.Sleep(40 * time.Second)
 
 	config, err := clientcmd.BuildConfigFromFlags("", clientcmd.RecommendedHomeFile)
 	require.Nil(t, err)
