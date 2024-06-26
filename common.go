@@ -8,10 +8,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apimachinery/pkg/runtime/serializer/json"
+	"k8s.io/client-go/kubernetes/scheme"
 )
 
-func decode(data []byte) (runtime.Object, *schema.GroupVersionKind, error) {
-	scheme := wellknownScheme
+func decode(data []byte, scheme *runtime.Scheme) (runtime.Object, *schema.GroupVersionKind, error) {
 	// https://github.com/kubernetes/apimachinery/issues/102#issue-713181306
 	codecs := serializer.NewCodecFactory(scheme)
 	deserializer := codecs.UniversalDeserializer()
@@ -44,7 +44,7 @@ func getNamespaceFromObject(obj runtime.Object) (string, error) {
 }
 
 func stringToRawExtension(manifest string) (runtime.RawExtension, error) {
-	obj, _, err := decode([]byte(manifest))
+	obj, _, err := decode([]byte(manifest), scheme.Scheme)
 	if err != nil {
 		return runtime.RawExtension{}, err
 	}
@@ -57,10 +57,10 @@ func stringToRawExtension(manifest string) (runtime.RawExtension, error) {
 	return raw, nil
 }
 
-func objToRawExtension(obj runtime.Object) (runtime.RawExtension, error) {
+func objToRawExtension(obj runtime.Object, scheme *runtime.Scheme) (runtime.RawExtension, error) {
 	// Probably RawExtension.Raw should be JSON.
 	// https://github.com/kubernetes/apimachinery/issues/102#issuecomment-707187760
-	serializer := json.NewSerializer(json.DefaultMetaFactory, wellknownScheme, wellknownScheme, false)
+	serializer := json.NewSerializer(json.DefaultMetaFactory, scheme, scheme, false)
 	var buffer bytes.Buffer
 
 	err := serializer.Encode(obj, &buffer)

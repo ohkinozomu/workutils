@@ -7,6 +7,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/utils/pointer"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
@@ -101,11 +102,12 @@ spec:
 		},
 	}
 
-	updatedWork, err := Update(work, deployment)
+	client := NewWorkUtilsClient(scheme.Scheme)
+	updatedWork, err := client.Update(work, deployment)
 	require.Nil(t, err)
 	require.Equal(t, len(updatedWork.Spec.Workload.Manifests), 1)
 
-	obj, err := Get(updatedWork, Resource{
+	obj, err := client.Get(updatedWork, Resource{
 		Group:     "apps",
 		Version:   "v1",
 		Kind:      "Deployment",

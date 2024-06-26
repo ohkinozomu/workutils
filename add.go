@@ -6,9 +6,9 @@ import (
 )
 
 // Add adds the given object to the ManifestWork
-func Add(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error) {
+func (client *WorkUtilsClient) Add(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error) {
 	manifests := work.Spec.Workload.Manifests
-	rawExtension, err := objToRawExtension(obj)
+	rawExtension, err := objToRawExtension(obj, client.Scheme)
 	if err != nil {
 		return work, err
 	}

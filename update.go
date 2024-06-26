@@ -2,11 +2,12 @@ package workutils
 
 import (
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/kubernetes/scheme"
 	workapiv1 "open-cluster-management.io/api/work/v1"
 )
 
 // Update updates ManifestWork
-func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error) {
+func (client *WorkUtilsClient) Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error) {
 	manifests := work.Spec.Workload.Manifests
 	group, version, kind, err := getGVKFromObject(obj)
 	if err != nil {
@@ -22,7 +23,7 @@ func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.Manifest
 	}
 
 	for i, manifest := range manifests {
-		o, gvk, err := decode(manifest.Raw)
+		o, gvk, err := decode(manifest.Raw, scheme.Scheme)
 		if err != nil {
 			return work, err
 		}
@@ -44,7 +45,7 @@ func Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.Manifest
 			return work, err
 		}
 
-		rawExtension, err := objToRawExtension(obj)
+		rawExtension, err := objToRawExtension(obj, client.Scheme)
 		if err != nil {
 			return work, err
 		}
