@@ -7,6 +7,7 @@ require (
 	github.com/ohkinozomu/go-sh v0.0.1
 	github.com/stretchr/testify v1.9.0
 	k8s.io/api v0.29.1
+	k8s.io/apiextensions-apiserver v0.28.0
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
 	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0
