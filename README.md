@@ -14,11 +14,11 @@ You first need to create a WorkUtilsClient. It requires passing `*runtime.Scheme
 
 ```go
 import(
-    "github.com/ohkinozomu/workutils"
-    "k8s.io/client-go/kubernetes/scheme"
+	"github.com/ohkinozomu/workutils"
+	"k8s.io/client-go/kubernetes/scheme"
 )
 
-    client := workutils.NewWorkUtilsClient(scheme.Scheme)
+	client := workutils.NewWorkUtilsClient(scheme.Scheme)
 ```
 
 If resources not included in `scheme.Scheme` are present in ManifestWork, `AddToScheme` for those resources is necessary.
@@ -46,4 +46,6 @@ func (client *WorkUtilsClient) Add(work workapiv1.ManifestWork, obj runtime.Obje
 func (client *WorkUtilsClient) Update(work workapiv1.ManifestWork, obj runtime.Object) (workapiv1.ManifestWork, error)
 
 func (client *WorkUtilsClient) Remove(work workapiv1.ManifestWork, resource Resource) (workapiv1.ManifestWork, error)
+
+func (client *WorkUtilsClient) Diff(old workapiv1.ManifestWork, new workapiv1.ManifestWork) (added []runtime.Object, removed []runtime.Object, updated []runtime.Object, err error) 
 ```
