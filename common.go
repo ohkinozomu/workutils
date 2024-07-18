@@ -43,6 +43,31 @@ func getNamespaceFromObject(obj runtime.Object) (string, error) {
 	return accessor.GetNamespace(), nil
 }
 
+func getResourceFromObject(obj runtime.Object) (Resource, error) {
+	group, version, kind, err := getGVKFromObject(obj)
+	if err != nil {
+		return Resource{}, err
+	}
+
+	name, err := getNameFromObject(obj)
+	if err != nil {
+		return Resource{}, err
+	}
+
+	namespace, err := getNamespaceFromObject(obj)
+	if err != nil {
+		return Resource{}, err
+	}
+
+	return Resource{
+		Group:     group,
+		Version:   version,
+		Kind:      kind,
+		Name:      name,
+		Namespace: namespace,
+	}, nil
+}
+
 func stringToRawExtension(manifest string) (runtime.RawExtension, error) {
 	obj, _, err := decode([]byte(manifest), scheme.Scheme)
 	if err != nil {
