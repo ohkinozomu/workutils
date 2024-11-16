@@ -3,7 +3,7 @@ module github.com/ohkinozomu/workutils
 go 1.21
 
 require (
-	github.com/go-playground/validator/v10 v10.22.0
+	github.com/go-playground/validator/v10 v10.23.0
 	github.com/ohkinozomu/go-sh v0.0.1
 	github.com/stretchr/testify v1.9.0
 	k8s.io/api v0.29.1
