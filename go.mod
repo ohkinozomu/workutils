@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/go-playground/validator/v10 v10.22.0
 	github.com/ohkinozomu/go-sh v0.0.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.12.1
 	k8s.io/api v0.29.1
 	k8s.io/apiextensions-apiserver v0.28.0
 	k8s.io/apimachinery v0.29.1
@@ -39,6 +39,7 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.19.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/oauth2 v0.10.0 // indirect
