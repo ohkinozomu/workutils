@@ -1,6 +1,6 @@
 module github.com/ohkinozomu/workutils
 
-go 1.21
+go 1.25
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0
@@ -10,7 +10,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.28.0
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
-	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
+	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3
 	open-cluster-management.io/api v0.13.0
 )
 
